@@ -32,5 +32,5 @@ cat <<EOF
 Build mesos with configure options:
 mesos/configure:  --with-glog=$ROOT --with-protobuf=$ROOT --with-boost=$ROOT
 
-For other projects add \`$ROOT/include\` to the include path and \`$ROOT/lib\` to LD_RUN_PATH. There is a bash script \`$ROOT/activate\` to help.
+For other projects add \`$ROOT/include\` to the include search path and \`$ROOT/lib\` to LD_RUN_PATH. There is a bash script \`$ROOT/activate\` to help.
 EOF
