@@ -1,0 +1,30 @@
+PREFIX=/usr/local
+SRCDIR=$(srcdir)
+all: $(PREFIX)/include/boost $(PREFIX)/include/google/protobuf $(PREFIX)/include/glog
+
+boost_1_53_0.tar.gz:
+	wget https://downloads.sourceforge.net/project/boost/boost/1.53.0/boost_1_53_0.tar.gz
+protobuf-2.5.0.tar.gz:
+	wget https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz
+glog-0.3.3.tar.gz:
+	wget https://google-glog.googlecode.com/files/glog-0.3.3.tar.gz
+
+# Use stamp files as dependencies so that the packages get extracted
+# and patches applied as appropriate.
+%-stamp: %.tar.gz
+	tar -xf $^
+	test ! -e $SRCDIR/patches/$*.patch || patch -d $* -p1 <$SRCDIR/patches/$*.patch
+	touch $@
+
+$(PREFIX)/include/boost: boost_1_53_0-stamp
+	mkdir -p $(PREFIX)/include/
+	cp -r boost_1_53_0/boost $(PREFIX)/include/
+	touch $@
+
+$(PREFIX)/include/google/protobuf: protobuf-2.5.0-stamp
+	cd protobuf-2.5.0 && ./configure --prefix=$(PREFIX)
+	$(MAKE) -C protobuf-2.5.0 install
+
+$(PREFIX)/include/glog: glog-0.3.3-stamp
+	cd glog-0.3.3 && ./configure --prefix=$(PREFIX) GTEST_CONFIG=no
+	$(MAKE) -C glog-0.3.3 install

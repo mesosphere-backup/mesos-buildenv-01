@@ -1,0 +1,36 @@
+#!/bin/bash
+set -e
+
+function usage {
+cat <<USAGE
+ USAGE: `basename $0` [root]
+
+  Make a Mesos build directory rooted at [root]
+USAGE
+}; function --help { usage ;}; function -h { usage ;};
+
+if [ "$#" -gt 2 ]; then
+  usage
+  exit
+fi
+
+
+ROOT=${1:-"$PWD/"env}
+mkdir -p "build"
+# sed "s#PREFIX=.*#PREFIX=${ROOT}#g" Makefile.in > build/Makefile
+cp Makefile.in build/Makefile
+SRCDIR=$PWD
+make -s -C build PREFIX="$ROOT" SRCDIR="$SRCDIR"
+
+cat <<EOF > $ROOT/activate
+export LD_RUN_PATH=$ROOT/lib
+export CXXFLAGS=-I$ROOT/include $CXXFLAGS
+export CFLAGS=-I$ROOT/include $CFLAGS
+EOF
+
+cat <<EOF
+Build mesos with configure options:
+mesos/configure:  --with-glog=$ROOT --with-protobuf=$ROOT --with-boost=$ROOT
+
+For other projects add \`$ROOT/include\` to the include path and \`$ROOT/lib\` to LD_RUN_PATH. There is a bash script \`$ROOT/activate\` to help.
+EOF
