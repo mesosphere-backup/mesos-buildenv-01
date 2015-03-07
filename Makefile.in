@@ -1,6 +1,6 @@
 PREFIX=/usr/local
 SRCDIR=$(srcdir)
-all: $(PREFIX)/include/boost $(PREFIX)/include/google/protobuf $(PREFIX)/include/glog
+all: $(PREFIX)/include/boost $(PREFIX)/include/google/protobuf $(PREFIX)/share/java/protobuf.jar $(PREFIX)/include/glog
 
 boost_1_53_0.tar.gz:
 	wget https://downloads.sourceforge.net/project/boost/boost/1.53.0/boost_1_53_0.tar.gz
@@ -24,6 +24,11 @@ $(PREFIX)/include/boost: boost_1_53_0-stamp
 $(PREFIX)/include/google/protobuf: protobuf-2.5.0-stamp
 	cd protobuf-2.5.0 && ./configure --prefix=$(PREFIX)
 	$(MAKE) -C protobuf-2.5.0 install
+
+$(PREFIX)/share/java/protobuf.jar: $(PREFIX)/include/google/protobuf protobuf-2.5.0-stamp
+	cd protobuf-2.5.0/java && mvn package
+	mkdir -p `dirname $@`
+	cp protobuf-2.5.0/java/target/protobuf-java-2.5.0.jar $@
 
 $(PREFIX)/include/glog: glog-0.3.3-stamp
 	cd glog-0.3.3 && ./configure --prefix=$(PREFIX) GTEST_CONFIG=no
