@@ -14,13 +14,19 @@ if [ "$#" -gt 2 ]; then
   exit
 fi
 
+pushd `dirname $0` > /dev/null
+SCRIPTPATH=`pwd`
+popd > /dev/null
+
 
 ROOT=${1:-"$PWD/"env}
-mkdir -p "build"
+mkdir -p "$SCRIPTPATH/build"
 # sed "s#PREFIX=.*#PREFIX=${ROOT}#g" Makefile.in > build/Makefile
-cp Makefile.in build/Makefile
+cp "$SCRIPTPATH/Makefile.in" "$SCRIPTPATH/build/Makefile"
 SRCDIR=$PWD
-make -s -C build PREFIX="$ROOT" SRCDIR="$SRCDIR"
+pushd "$SCRIPTPATH/build"
+make -s PREFIX="$ROOT" SRCDIR="$SRCDIR"
+popd
 
 cat <<EOF > $ROOT/activate
 export LD_RUN_PATH=$ROOT/lib
