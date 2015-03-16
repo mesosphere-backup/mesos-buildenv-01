@@ -27,7 +27,7 @@ $(PREFIX)/include/google/protobuf: protobuf-2.5.0-stamp
 	cd protobuf-2.5.0 && ./configure --prefix=$(PREFIX)
 	$(MAKE) -C protobuf-2.5.0 install
 
-$(PREFIX)/share/java/protobuf.jar: $(PREFIX)/include/google/protobuf protobuf-2.5.0-stamp
+$(PREFIX)/share/java/protobuf.jar: $(PREFIX)/include/google/protobuf protobuf-2.5.0-stamp $(PREFIX)/include/google/protobuf
 	cd protobuf-2.5.0/java && mvn package
 	mkdir -p `dirname $@`
 	cp protobuf-2.5.0/java/target/protobuf-java-2.5.0.jar $@
@@ -37,4 +37,5 @@ $(PREFIX)/include/glog: glog-0.3.3-stamp
 	$(MAKE) -C glog-0.3.3 install
 
 $(PREFIX)/include/picojson.h: picojson-4f93734-stamp
+	mkdir -p `dirname $@`
 	cp kazuho-picojson-4f93734/picojson.h $(PREFIX)/include/picojson.h
