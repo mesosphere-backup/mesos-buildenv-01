@@ -1,5 +1,8 @@
 PREFIX=/usr/local
 SRCDIR=$(srcdir)
+
+.PHONY: all
+
 all: $(PREFIX)/include/boost $(PREFIX)/include/google/protobuf $(PREFIX)/share/java/protobuf.jar $(PREFIX)/include/glog $(PREFIX)/include/picojson.h
 
 boost_1_53_0.tar.gz:
