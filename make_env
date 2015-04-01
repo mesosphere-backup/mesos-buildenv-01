@@ -24,9 +24,9 @@ mkdir -p "$SCRIPTPATH/build"
 # sed "s#PREFIX=.*#PREFIX=${ROOT}#g" Makefile.in > build/Makefile
 cp "$SCRIPTPATH/Makefile.in" "$SCRIPTPATH/build/Makefile"
 SRCDIR=$PWD
-pushd "$SCRIPTPATH/build"
+pushd "$SCRIPTPATH/build" > /dev/null
 make -s PREFIX="$ROOT" SRCDIR="$SRCDIR"
-popd
+popd > /dev/null
 
 cat <<EOF > $ROOT/activate
 export LD_RUN_PATH=$ROOT/lib
