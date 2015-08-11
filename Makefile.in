@@ -24,10 +24,11 @@ picojson-4f93734.tar.gz:
 $(PREFIX)/include/boost: boost_1_53_0-stamp
 	mkdir -p $(PREFIX)/include/
 	cp -r boost_1_53_0/boost $(PREFIX)/include/
+	rm -rf $(PREFIX)/include/boost/phoenix $(PREFIX)/include/boost/fusion $(PREFIX)/include/boost/spirit
 	touch $@
 
 $(PREFIX)/include/google/protobuf: protobuf-2.5.0-stamp
-	cd protobuf-2.5.0 && ./configure --prefix=$(PREFIX)
+	cd protobuf-2.5.0 && ./configure --prefix=$(PREFIX) --disable-static
 	$(MAKE) -C protobuf-2.5.0 install
 
 $(PREFIX)/share/java/protobuf.jar: $(PREFIX)/include/google/protobuf protobuf-2.5.0-stamp $(PREFIX)/include/google/protobuf
@@ -36,7 +37,7 @@ $(PREFIX)/share/java/protobuf.jar: $(PREFIX)/include/google/protobuf protobuf-2.
 	cp protobuf-2.5.0/java/target/protobuf-java-2.5.0.jar $@
 
 $(PREFIX)/include/glog: glog-0.3.3-stamp
-	cd glog-0.3.3 && ./configure --prefix=$(PREFIX) GTEST_CONFIG=no
+	cd glog-0.3.3 && ./configure --prefix=$(PREFIX) GTEST_CONFIG=no --disable-static
 	$(MAKE) -C glog-0.3.3 install
 
 $(PREFIX)/include/picojson.h: picojson-4f93734-stamp
