@@ -12,8 +12,8 @@ protobuf-2.5.0.tar.gz:
 glog-0.3.3.tar.gz:
 	wget https://google-glog.googlecode.com/files/glog-0.3.3.tar.gz
 
-picojson-4f93734.tar.gz:
-	curl -L https://github.com/kazuho/picojson/tarball/4f93734ade33ea0f5e5b4de35fc6b2c324a8dca6 -o picojson-4f93734.tar.gz
+picojson-25fc213.tar.gz:
+	curl -L https://github.com/kazuho/picojson/tarball/25fc213 -o picojson-25fc213.tar.gz
 # Use stamp files as dependencies so that the packages get extracted
 # and patches applied as appropriate.
 %-stamp: %.tar.gz
@@ -40,6 +40,6 @@ $(PREFIX)/include/glog: glog-0.3.3-stamp
 	cd glog-0.3.3 && ./configure --prefix=$(PREFIX) GTEST_CONFIG=no --disable-static
 	$(MAKE) -C glog-0.3.3 install
 
-$(PREFIX)/include/picojson.h: picojson-4f93734-stamp
+$(PREFIX)/include/picojson.h: picojson-25fc213-stamp
 	mkdir -p `dirname $@`
-	cp kazuho-picojson-4f93734/picojson.h $(PREFIX)/include/picojson.h
+	cp kazuho-picojson-25fc213/picojson.h $(PREFIX)/include/picojson.h
