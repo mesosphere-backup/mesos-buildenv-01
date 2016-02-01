@@ -3,7 +3,7 @@ SRCDIR=$(srcdir)
 
 .PHONY: all
 
-all: $(PREFIX)/include/boost $(PREFIX)/include/google/protobuf $(PREFIX)/share/java/protobuf.jar $(PREFIX)/include/glog $(PREFIX)/include/picojson.h
+all: $(PREFIX)/include/boost $(PREFIX)/include/google/protobuf $(PREFIX)/share/java/protobuf.jar $(PREFIX)/include/glog
 
 boost_1_53_0.tar.gz:
 	wget https://downloads.sourceforge.net/project/boost/boost/1.53.0/boost_1_53_0.tar.gz
@@ -12,8 +12,6 @@ protobuf-2.5.0.tar.gz:
 glog-0.3.3.tar.gz:
 	wget https://google-glog.googlecode.com/files/glog-0.3.3.tar.gz
 
-picojson-25fc213.tar.gz:
-	curl -L https://github.com/kazuho/picojson/tarball/25fc213 -o picojson-25fc213.tar.gz
 # Use stamp files as dependencies so that the packages get extracted
 # and patches applied as appropriate.
 %-stamp: %.tar.gz
@@ -39,7 +37,3 @@ $(PREFIX)/share/java/protobuf.jar: $(PREFIX)/include/google/protobuf protobuf-2.
 $(PREFIX)/include/glog: glog-0.3.3-stamp
 	cd glog-0.3.3 && ./configure --prefix=$(PREFIX) GTEST_CONFIG=no --disable-static
 	$(MAKE) -C glog-0.3.3 install
-
-$(PREFIX)/include/picojson.h: picojson-25fc213-stamp
-	mkdir -p `dirname $@`
-	cp kazuho-picojson-25fc213/picojson.h $(PREFIX)/include/picojson.h
