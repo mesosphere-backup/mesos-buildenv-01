@@ -7,8 +7,8 @@ all: $(PREFIX)/include/boost $(PREFIX)/include/google/protobuf $(PREFIX)/share/j
 
 boost_1_53_0.tar.gz:
 	wget https://downloads.sourceforge.net/project/boost/boost/1.53.0/boost_1_53_0.tar.gz
-protobuf-2.5.0.tar.gz:
-	wget https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz
+protobuf-2.6.1.tar.gz:
+	wget https://github.com/google/protobuf/releases/download/v2.6.1/protobuf-2.6.1.tar.gz
 glog-0.3.3.tar.gz:
 	wget https://google-glog.googlecode.com/files/glog-0.3.3.tar.gz
 
@@ -25,14 +25,14 @@ $(PREFIX)/include/boost: boost_1_53_0-stamp
 	rm -rf $(PREFIX)/include/boost/phoenix $(PREFIX)/include/boost/fusion $(PREFIX)/include/boost/spirit
 	touch $@
 
-$(PREFIX)/include/google/protobuf: protobuf-2.5.0-stamp
-	cd protobuf-2.5.0 && ./configure --prefix=$(PREFIX) --disable-static
-	$(MAKE) -C protobuf-2.5.0 install
+$(PREFIX)/include/google/protobuf: protobuf-2.6.1-stamp
+	cd protobuf-2.6.1 && ./configure --prefix=$(PREFIX) --disable-static
+	$(MAKE) -C protobuf-2.6.1 install
 
-$(PREFIX)/share/java/protobuf.jar: $(PREFIX)/include/google/protobuf protobuf-2.5.0-stamp $(PREFIX)/include/google/protobuf
-	cd protobuf-2.5.0/java && mvn package
+$(PREFIX)/share/java/protobuf.jar: $(PREFIX)/include/google/protobuf protobuf-2.6.1-stamp $(PREFIX)/include/google/protobuf
+	cd protobuf-2.6.1/java && mvn package
 	mkdir -p `dirname $@`
-	cp protobuf-2.5.0/java/target/protobuf-java-2.5.0.jar $@
+	cp protobuf-2.6.1/java/target/protobuf-java-2.6.1.jar $@
 
 $(PREFIX)/include/glog: glog-0.3.3-stamp
 	cd glog-0.3.3 && ./configure --prefix=$(PREFIX) GTEST_CONFIG=no --disable-static
